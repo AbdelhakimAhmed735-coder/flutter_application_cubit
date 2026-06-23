@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_cubit/constants/app_color.dart';
 import 'package:flutter_application_cubit/constants/custom_text.dart';
+import 'package:flutter_application_cubit/cubits/bmi_cubits/bmi_cubits.dart';
 import 'package:flutter_application_cubit/shared/custom_card.dart';
 import 'package:flutter_application_cubit/shared/custom_height_card.dart';
 import 'package:flutter_application_cubit/gender_selection/views/result/result.dart'
     show Result;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MaleViews extends StatefulWidget {
   const MaleViews({super.key});
@@ -19,77 +20,144 @@ class _MaleViewsState extends State<MaleViews> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 84, 205, 179),
+      // خلفية أزرق فاتح
+      backgroundColor: const Color(0xffE3F2FD),
+
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 199, 164, 177),
-        title: Text("Male"),
+        // لون البار
+        backgroundColor: const Color(0xff90CAF9),
+
+        title: const Text(
+          "Male",
+          style: TextStyle(
+            color: Color(0xff0D47A1),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        centerTitle: true,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
+
         child: Center(
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
                   CustomText(
                     text: "BMI",
                     wight: FontWeight.bold,
-                    color: AppColor.seconedColor,
+                    color: const Color(0xff1565C0),
                     size: 40,
                   ),
-                  SizedBox(width: 5),
+
+                  const SizedBox(width: 5),
+
                   CustomText(
                     text: "Calculator",
                     wight: FontWeight.bold,
-                    color: AppColor.primaryColor,
+                    color: const Color(0xff00897B),
                     size: 40,
                   ),
                 ],
               ),
-              SizedBox(height: 25),
+
+              const SizedBox(height: 25),
+
               CustomText(
                 text: "Please modify the values",
                 wight: FontWeight.bold,
-                color: Colors.black,
+                color: const Color(0xff263238),
                 size: 25,
               ),
-              SizedBox(height: 40),
+
+              const SizedBox(height: 40),
+
               Row(
                 children: [
                   CustomCard(
-                    text: "Weight(Kg)",
-                    color: Color.fromARGB(255, 109, 230, 212),
+                    text: "Weight",
+
+                    color: const Color(0xffFFFFFF),
+
+                    value: context.watch<BmiCubit>().weight,
+
+                    onAdd: () {
+                      context.read<BmiCubit>().increaseWeight();
+                    },
+
+                    onRemove: () {
+                      context.read<BmiCubit>().decreaseWeight();
+                    },
                   ),
+
                   CustomCard(
                     text: "Age",
-                    color: Color.fromARGB(255, 109, 230, 212),
+
+                    color: const Color(0xffFFFFFF),
+
+                    value: context.watch<BmiCubit>().age,
+
+                    onAdd: () {
+                      context.read<BmiCubit>().increaseAge();
+                    },
+
+                    onRemove: () {
+                      context.read<BmiCubit>().decreaseAge();
+                    },
                   ),
                 ],
               ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
+
                 child: CustomHeightCard(),
               ),
+
               GestureDetector(
                 onTap: () {
+                  context.read<BmiCubit>().setGender("Male");
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Result()),
                   );
                 },
+
                 child: Container(
                   width: 200,
+
                   height: 63,
+
                   decoration: BoxDecoration(
-                    color: AppColor.primaryColor,
+                    color: const Color(0xff00897B),
+
                     borderRadius: BorderRadius.circular(20),
+
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x5500897B),
+
+                        blurRadius: 10,
+
+                        offset: Offset(0, 5),
+                      ),
+                    ],
                   ),
+
                   child: Center(
                     child: CustomText(
-                      text: "Continue",
+                      text: "Show results",
+
                       wight: FontWeight.w500,
+
                       color: Colors.white,
+
                       size: 30,
                     ),
                   ),

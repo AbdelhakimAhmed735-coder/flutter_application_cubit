@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BmiCubit extends Cubit<BmiState> {
   BmiCubit() : super(BmiInitial());
-
+  String gender = "";
   int weight = 65;
   int age = 26;
   double height = 170;
@@ -31,5 +31,28 @@ class BmiCubit extends Cubit<BmiState> {
   void changeHeight(double value) {
     height = value;
     emit(BmiUpdated());
+  }
+
+  double calculateBMI() {
+    double heightInMeter = height / 100;
+    return weight / (heightInMeter * heightInMeter);
+  }
+
+  String getResult() {
+    double bmi = calculateBMI();
+
+    if (bmi < 18.5) {
+      return "Underweight";
+    } else if (bmi < 25) {
+      return "Normal";
+    } else if (bmi < 30) {
+      return "Overweight";
+    } else {
+      return "Obese";
+    }
+  }
+
+  void setGender(String value) {
+    gender = value;
   }
 }

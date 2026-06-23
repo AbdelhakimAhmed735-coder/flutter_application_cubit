@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_cubit/constants/app_color.dart';
 import 'package:flutter_application_cubit/constants/custom_text.dart';
-import 'package:flutter_application_cubit/cubits/bmi_cubits/bmi_cubits.dart';
-import 'package:flutter_application_cubit/cubits/bmi_cubits/bmi_states.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomCard extends StatelessWidget {
-  const CustomCard({super.key, required this.text, required this.color});
+  const CustomCard({
+    super.key,
+    required this.text,
+    required this.color,
+    required this.value,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
   final String text;
   final Color color;
+  final int value;
+  final VoidCallback onAdd;
+  final VoidCallback onRemove;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -16,26 +25,18 @@ class CustomCard extends StatelessWidget {
       height: 200,
       child: Card(
         color: color,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         child: Column(
           children: [
             CustomText(
               text: text,
               wight: FontWeight.bold,
-              color: color,
+              color: AppColor.seconedColor,
               size: 20,
             ),
-            BlocBuilder<BmiCubit, BmiState>(
-              builder: (context, state) {
-                return Text(
-                  context.read<BmiCubit>().weight.toString(),
-                  style: TextStyle(
-                    fontSize: 60,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.seconedColor,
-                  ),
-                );
-              },
+            Text(
+              value.toString(),
+              style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -45,28 +46,14 @@ class CustomCard extends StatelessWidget {
                   FloatingActionButton(
                     heroTag: "${text}_plus",
                     mini: true,
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      context.read<BmiCubit>().increaseWeight();
-                    },
-                    child: Icon(
-                      Icons.add,
-                      size: 35,
-                      color: AppColor.seconedColor,
-                    ),
+                    onPressed: onAdd,
+                    child: const Icon(Icons.add),
                   ),
                   FloatingActionButton(
-                    heroTag: "${text}minus",
+                    heroTag: "${text}_minus",
                     mini: true,
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      context.read<BmiCubit>().decreaseAge();
-                    },
-                    child: Icon(
-                      Icons.remove,
-                      size: 35,
-                      color: AppColor.seconedColor,
-                    ),
+                    onPressed: onRemove,
+                    child: const Icon(Icons.remove),
                   ),
                 ],
               ),
